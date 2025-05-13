@@ -1,0 +1,119 @@
+package kr.or.iei.member.model.service;
+
+import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
+
+import kr.or.iei.common.JDBCTemplate;
+import kr.or.iei.member.model.dao.MemberDao;
+import kr.or.iei.member.model.vo.Member;
+
+public class MemberService {
+	
+	private MemberDao dao;
+	
+	public MemberService() {
+		dao = new MemberDao();
+	}
+
+	public int memberJoin(Member member) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.memberJoin(conn, member);
+		if(result > 0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);			
+		}
+		JDBCTemplate.close(conn);
+				
+		return result;
+	}
+
+	public int idDuplChk(String memberId) {
+		Connection conn = JDBCTemplate.getConnection();
+		int cnt = dao.idDuplChk(conn, memberId);
+		JDBCTemplate.close(conn);
+		return cnt;	
+	}
+
+	public Member memberLogin(String loginId, String loginPw) {
+		Connection conn = JDBCTemplate.getConnection();
+		Member loginMember = dao.memberLogin(conn, loginId, loginPw);
+		JDBCTemplate.close(conn);
+		return loginMember;
+	}
+
+	public int updateMember(Member updMember) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.updateMember(conn, updMember);
+		if(result > 0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		return result;
+	}
+
+	public int deleteMember(String memberNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.deleteMember(conn, memberNo);
+		
+		if(result > 0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		
+		JDBCTemplate.close(conn);
+		return result;
+	}
+
+	public int updateMemberPw(String memberNo, String newMemberPw) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.updateMemberPw(conn, memberNo, newMemberPw);
+		
+		if(result > 0) {
+			JDBCTemplate.commit(conn);
+		}else { 
+			JDBCTemplate.rollback(conn);
+		}
+		
+		JDBCTemplate.close(conn);
+		return result;
+	}
+
+	public ArrayList<Member> selectAllMember() {
+		Connection conn = JDBCTemplate.getConnection();
+		ArrayList<Member> list = dao.selectAllMember(conn);
+		JDBCTemplate.close(conn);
+				
+		return list;
+	}
+
+	public int chgLevel(String memberNo, String chgLevel) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.chgLevel(conn, memberNo, chgLevel);
+		
+		if(result > 0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		
+		JDBCTemplate.close(conn);		
+		return result;
+	}
+
+	public void chgAllLevel(String memberNo, String chgLevel) {
+		Connection conn = JDBCTemplate.getConnection();
+		
+		//전달 받은 회원번호와 변경등급 문자열을 / 기준으로 잘라서 토큰화
+		StringTokenizer st1 = new StringTokenizer(memberNo, "/");
+		StringTokenizer st2 = new StringTokenizer(chgLevel, "/");
+		
+	}
+
+
+
+}

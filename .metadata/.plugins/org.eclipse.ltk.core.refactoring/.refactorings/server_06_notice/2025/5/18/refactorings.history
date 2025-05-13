@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Move element &apos;login.jsp&apos; to &apos;member&apos;&#x0D;&#x0A;- Original project: &apos;server_06_notice&apos;&#x0D;&#x0A;- Destination element: &apos;member&apos;&#x0D;&#x0A;- Original element: &apos;login.jsp&apos;&#x0D;&#x0A;- Update references to refactored element" description="Move file" element1="src/main/webapp/WEB-INF/views/common/login.jsp" files="1" flags="589830" folders="0" id="org.eclipse.jdt.ui.move" policy="org.eclipse.jdt.ui.moveResources" qualified="false" references="true" stamp="1746064130749" target="src/main/webapp/WEB-INF/views/member" units="0" version="1.0"/>
+</session>

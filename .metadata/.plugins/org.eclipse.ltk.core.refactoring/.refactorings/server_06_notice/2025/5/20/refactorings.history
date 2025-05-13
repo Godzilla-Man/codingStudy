@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;writeFrm.jsp&apos; to &apos;writeFrm.jsp&apos;&#x0D;&#x0A;- Original project: &apos;server_06_notice&apos;&#x0D;&#x0A;- Destination element: &apos;writeFrm.jsp&apos;&#x0D;&#x0A;- Original element: &apos;writeFrm.jsp&apos;" description="Copy file" element1="src/main/webapp/WEB-INF/views/notice/writeFrm.jsp" files="1" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1747106662172" target="/server_06_notice/src/main/webapp/WEB-INF/views/notice/writeFrm.jsp" units="0" version="1.0"/>
+</session>

@@ -1,0 +1,15 @@
+package kr.or.iei.common;
+
+import java.io.File;
+
+import com.oreilly.servlet.multipart.FileRenamePolicy;
+
+public class KhRenamePolicy implements FileRenamePolicy{
+
+	@Override
+	public File rename(File arg0) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+}

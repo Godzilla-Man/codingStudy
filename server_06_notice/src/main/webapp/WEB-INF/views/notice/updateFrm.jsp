@@ -1,0 +1,87 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>    
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>게시글 정보 수정</title>
+<style>
+	.delBtn{
+		color : #ff0000;
+		display : inline-block;
+		height: 30px;
+	}
+	.delBtn:hover {
+		cursor : pointer;
+	}
+</style>
+</head>
+<body>
+	<div class="wrap">
+		<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
+		<main>
+			<section class="section notice-update-wrap">
+				<div class="page-title">게시글 수정</div>
+				<form action="/notice/update" method="post" enctype="multipart/form-data">
+					<input type="hidden" name="noticeNo" value="${notice.noticeNo}">
+					<table class="tbl">
+						<tr>
+							<th style="width:15%;">제목</th>
+							<td>
+								<div class="input-item">
+									<input type="text" name="noticeTitle" value="${notice.noticeTitle}">
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<th>첨부파일</th>
+							<td>
+								<div class="left">
+									<c:forEach var="file" items="${notice.fileList}">
+										<div class="files">
+											<span class="delFileName">${file.fileName}</span>
+											<span class="material-icons delBtn" onclick="delFile(this, ${file.fileNo})">remove_circle</span>
+										</div>									
+									</c:forEach>
+								</div>
+							</td>							
+						</tr>
+						<tr>
+							<th>추가파일</th>
+							<td>
+								<input type="file" name="addFile">
+							</td>
+						</tr>
+						<tr>
+							<th>내용</th>
+							<td class="left">
+								<div class="input-item">
+									<textarea name="noticeContent">${notice.noticeContent}</textarea>
+								</div>
+							</td>							
+						</tr>
+						<tr>
+							<td colspan="2">
+								<button class="btn-primary lg">수정</button>
+							</td>
+						</tr>
+					</table>
+				</form>
+			</section>		
+		</main>		
+		<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
+	</div>
+	<script>
+	function delFile(obj, fileNo){
+		//파일 삭제 아이콘 클릭 시, form태그 내부에 hidden 타입으로 input 태그 추가
+		let input = $('<input>');
+		input.attr('type', 'hidden');
+		input.attr('name', 'delFileNo');
+		input.attr('value', fileNo);
+		$(obj).parent().remove(); //화면에서 요소 제거
+		$('form').prepend(input); //form 태그의 첫번 째 자식으로 추가
+	}
+	</script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+package kr.or.iei.notice.model.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+
+import kr.or.iei.notice.model.vo.Notice;
+
+public class NoticeDao {
+
+	public ArrayList<Notice> selectNoticeList(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		ArrayList<Notice> list = new ArrayList<Notice>();
+		
+		String query = ""
+		
+		return null;
+	}
+
+}

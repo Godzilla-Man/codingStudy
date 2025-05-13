@@ -1,0 +1,58 @@
+package kr.or.iei.notice.controller;
+
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import kr.or.iei.notice.model.service.NoticeService;
+import kr.or.iei.notice.model.vo.NoticeComment;
+
+/**
+ * Servlet implementation class InsertCommentServlet
+ */
+@WebServlet("/notice/insertComent")
+public class InsertCommentServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public InsertCommentServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//1. 인코딩 -필터
+		//2. 값 추출
+		String commentWriter = request.getParameter("commentWriter");
+		String commentContent = request.getParameter("commentContent");
+		String noticeRef = request.getParameter("noticeRef");
+		
+		//3. 로직
+		NoticeComment comment = new NoticeComment();
+		comment.setCommentWriter(commentWriter);
+		comment.setCommentContent(commentContent);
+		comment.setNoticeRef(noticeRef);
+		
+		NoticeService service = new NoticeService();
+		int result = service.insertCommet(comment);
+		
+		//4. 결과 처리
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
+
+}

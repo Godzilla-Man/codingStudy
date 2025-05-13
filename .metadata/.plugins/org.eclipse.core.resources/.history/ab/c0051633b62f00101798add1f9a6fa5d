@@ -1,0 +1,114 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>게시글 작성</title>
+
+<style>
+    .notice-write-container {
+        display: flex;
+        justify-content: center;
+        align-items: center; /* 'cneter' -> 'center' 오타 수정 */
+    }
+
+    .notice-write-wrap {
+        width: 1000px; /* 전체 컨텐츠 영역의 최대 너비 */
+    }
+
+    /* 테이블이 .notice-write-wrap의 너비를 100% 사용하도록 합니다. */
+    .notice-write-wrap .tbl {
+        width: 100%;
+        /* table-layout: fixed; */ /* 필요에 따라 컬럼 너비 고정 시 사용 */
+    }
+
+    /* textarea를 감싸는 div.input-item이 td의 너비를 100% 채우도록 합니다. */
+    /* 이렇게 하면 Summernote 에디터도 이 너비를 따라갑니다. */
+    .notice-write-wrap .input-item {
+        width: 100%;
+    }
+
+    /* * Summernote는 textarea를 숨기고 자체 UI를 생성합니다.
+     * 따라서 아래의 .input-item > textarea 스타일은
+     * Summernote의 높이 설정(height: 500px)으로 인해
+     * 직접적인 에디터 높이에는 영향을 주지 않지만,
+     * 너비 관련해서는 .input-item의 너비가 중요합니다.
+     */
+    .notice-write-wrap .input-item > textarea { /* 'textare' -> 'textarea' 오타 수정 */
+        /* height: 300px; */ /* Summernote의 height 옵션으로 제어됩니다. */
+        width: 100%;      /* Summernote가 이 너비를 참조할 수 있도록 합니다. */
+        box-sizing: border-box; /* 패딩이나 테두리를 포함한 너비를 계산합니다. */
+    }
+</style>
+
+</head>
+<body>
+	<div class="wrap">
+		<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
+		<main class="content notice-write-container">
+			<section class="section notice-write-wrap">
+				<div class="page-title">게시판 작성</div>
+				<form action="/notice/write"
+					  method="post" <%-- 첨부파일 업로드 시, method는 무조건 post로 지정하고, enctype은 multipart로 지정해야 함. --%>
+					  enctype="multipart/form-data">
+					  <%--tbl_notice의 notice_writer(작성자) 컬럼의 값은 회원 번호! --%>
+					  <input type="hidden" name="noticeWriter" value="${loginMember.memberNo}">
+					  
+					  <table class="tbl">
+					  	<tr>
+					  		<th>제목</th>
+					  		<td colspan="3">					  		
+					  			<div class="input-item">
+					  				<input type="text" name="noticeTitle">
+					  			</div>
+					  		</td>
+					  	</tr>
+					  	<tr>
+					  		<th style="width:10%;">작성자</th>
+					  		<td style="width:40%;">
+					  			<span>${loginMember.memberId}</span>
+					  		</td>
+					  		<th style="width:10%;">첨부파일</th>
+					  		<td style="width:40%;">
+					  			<input type="file" name="uploadFile">
+					  		</td>
+					  	</tr>
+					  	<tr>
+					  		<td colspan="4">
+					  			<div class="input-item">
+					  				<textarea name="noticeContent" id="noticeContent"></textarea>
+					  			</div>
+					  		</td>
+				  		</tr>
+				  		<tr>
+				  			<td colspan="4">
+				  				<button type="submit" class="btn-primary lg">작성하기</button>
+				  			</td>
+				  		</tr>
+					  </table>
+			  	</form>				
+			</section>
+		</main>
+		<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
+	</div>
+	
+	<script src="/resources/summernote/summernote-lite.js"></script>
+	<script src="/resources/summernote/lang/summernote-ko-KR.js"></script>
+	<link rel="stylesheet" href="/resources/summernote/summernote-lite.css">
+	<script>
+		$('#noticeContent').summernote({
+			height : 500,			
+			lang : "ko-KR",
+			disableResize : true,
+			disableResizeEditor : true,
+			resize : false,
+			callbacks : {
+				onInit : function(){
+					$('div.input-item').find('.note-editable').css('text-align', 'left');
+				}
+			}
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+package kr.or.iei.notice.controller;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Servlet implementation class WriteServlet
+ */
+@WebServlet("/notice/write")
+public class WriteServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public WriteServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//1. 인코딩 - 필터		
+		//2. 값 추출 - 파일 업로드 시, 기존 HttpServletRequest 객체로 추출하던 방식 사용 X.
+		
+		//오늘 날짜(yyyyMMdd) 폴더 생성을 위한 String 변수
+		String toDay = new SimpleDateFormat("yyyyMMdd").format(new Date()); // "20250509"
+		
+		String rootPath = request.getSession().getServletContext().getRealPath("/");
+		
+		//3. 로직
+		
+		//4. 결과 처리
+		//4.1 이동할 페이지 경로 지정
+		//4.2 화면 구현에 필요한 데이터 등록
+		//4.3 페이지 이동
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
+
+}

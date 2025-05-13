@@ -1,0 +1,24 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div class="wrap">
+		<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
+		<main class="content notice-write-container">
+			<section class="section notice-write-wrap">
+				<div class="page-title">게시판 작성</div>
+				<form action="/notice/write"
+					  method="post" <%-- 첨부파일 업로드 시, method는 무조건 post로 지정하고, enctype은 multipart로 지정해야 함. --%>
+					  enctype="multipart/form-data">
+			  	</form>				
+			</section>
+		<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
+		</main>
+	</div>
+</body>
+</html>

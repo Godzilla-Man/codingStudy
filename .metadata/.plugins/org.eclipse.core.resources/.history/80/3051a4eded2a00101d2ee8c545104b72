@@ -1,0 +1,57 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>비밀번호 변경 페이지</h1>
+</body>
+	<div class="wrap">
+		<main class="content pw=container">
+			<section class="section">
+				<div class="pw-info-wrap">
+					<form id="pwChgForm" action="/member/pwChg" method="post">
+						
+						<div class="input-wrap">
+							<div class="input-title">
+								<label for="memberPw">현재 비밀번호</label>
+							</div>
+							<div class="input-item">
+								<%-- 서블릿에서 세션에 등록된 회원의 비밀번호와 일치하는지 검증하기 위해, name 속성 작성하여 서버로 전송 --%>
+								<input type="password" id="memberPw" name="memberPw">
+							</div>
+						</div>
+						
+						<div class="input-wrap">
+							<div class="input-title">
+								<label for="newMemberPw">새 비밀번호</label>								
+							</div>
+							<div class="input-item">
+								<input type="password" id="newMemberPw" name="newMemberPw" placeholder="영어, 숫자, 특수문자(!,@,#,$) 6~30글자">
+							</div>
+						</div>
+						
+						<div class="input-wrap">
+							<div class="input-title">
+								<label for="newMemberPwRe">새 비밀번호 확인</label>
+							</div>
+							<div class="input-item">
+								<input type="password" id="newMemberPwRe" name="newMemberPwRe" placeholder="새 비밀번호 확인">
+							</div>
+							<p id="pwMessage" class="input-msg"></p>
+						</div>	
+						
+						<div class="pw-btn">
+							<button type="button" onclick="pwChg()" class="btn=primary lg">변경하기</button>
+							<button type="button" onclick="closeFn()" class="btn-secondary lg">닫기</button>
+						</div>
+											
+					</form>
+				</div>
+			</section>
+		</main>
+	</div>
+</html>
