@@ -16,8 +16,17 @@
 				<li>
 					<a href="/notice/getList?reqPage=1">게시판</a>					
 				</li>
+				<%--
+				APi
+				- 소프트웨어의 응용프로그램에서 다른 소프트웨어 구성요소 또는 서비스와 상호작용하기 위한 인터페이스
+				 --%>
 				<li>
-					<a href="#">메뉴2</a>
+					<a href="#">API</a>
+					<ul class="sub-menu">
+						<li><a href="/api/naverMap">네이버지도</a></li>
+						<li><a href="/api/emailSendFrm">이메일</a></li>
+						<li><a href="/api/busanPlace">공공API</a></li>
+					</ul>
 				</li>
 				<li>
 					<a href="#">메뉴3</a>

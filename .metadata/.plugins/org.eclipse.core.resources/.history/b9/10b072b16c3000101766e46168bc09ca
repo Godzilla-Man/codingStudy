@@ -1,0 +1,55 @@
+package kr.or.iei.api.controller;
+
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
+/**
+ * Servlet implementation class BusanXmlServlet
+ */
+@WebServlet("/api/busanXml")
+public class BusanXmlServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public BusanXmlServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		//서비스 요청 URL
+		String url = "https://apis.data.go.kr/6260000/FoodService";
+		//발급받은 Service Key
+		String serviceKey = "mwmcxLI4drRwtFraJlaK9MHNmUNip%2BQF%2BZ%2BFpcQqRCj%2BE6azhFtvGojG7fVcc4EPO9efqY3VaCynHFoxzyyU3g%3D%3D";
+		//요청 페이지
+		String reqPage = "1";
+		
+		Document document = Jsoup.connect(url).data("serviceKey", serviceKey)
+						  .data("numOfRows", "10")
+						  .data("pageNo", reqPage)
+						  .ignoreContentType(true)
+						  .get();
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
+
+}

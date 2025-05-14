@@ -1,0 +1,24 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>이메일 전송</title>
+</head>
+<body>
+	<div class="wrap">
+		<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
+		<main class="content">
+			<section class="section email-wrap">
+				<div calss="page-title">이메일 전송</div>
+				<form action="/api/emailSend" method="post">
+					<table class="tbl">
+					</table>
+				</form>
+			</section>
+		</main>
+	</div>
+
+</body>
+</html>

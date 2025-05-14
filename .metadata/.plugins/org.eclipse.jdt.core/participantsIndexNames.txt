@@ -17,6 +17,8 @@ C:\serverworkspace\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1823696
 \server_01_servlet_nodb\src\main\java
 C:\serverworkspace\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3656264626.index
 \server_06_notice\src\main\java
+C:\serverworkspace\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3916044193.index
+\server_06_notice\src\main\java
 C:\serverworkspace\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\176456356.index
 \server_06_notice\src\main\java
 C:\serverworkspace\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1808774664.index

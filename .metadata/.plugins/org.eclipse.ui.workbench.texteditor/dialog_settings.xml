@@ -4,6 +4,8 @@
 	<section name="java.lang.Class">
 		<item key="replaceBarOpen" value="false"/>
 		<list key="findhistory">
+			<item value="write"/>
+			<item value="comment-write"/>
 			<item value="rootPath"/>
 			<item value="result"/>
 			<item value="chgLevel"/>
@@ -17,8 +19,6 @@
 			<item value="swal"/>
 			<item value="ajazx"/>
 			<item value="탈퇴"/>
-			<item value="closeModal"/>
-			<item value="updateValidate"/>
 		</list>
 	</section>
 </section>

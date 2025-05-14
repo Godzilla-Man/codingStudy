@@ -1,0 +1,92 @@
+package kr.or.iei.api.controller;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import com.google.gson.Gson;
+
+import kr.or.iei.api.model.vo.FoodPlace;
+
+/**
+ * Servlet implementation class BusanXmlServlet
+ */
+@WebServlet("/api/busanXml")
+public class BusanXmlServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public BusanXmlServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		//서비스 요청 URL
+		String url = "https://apis.data.go.kr/6260000/FoodService/getFoodKr";
+		//발급받은 Service Key(디코딩 key)
+		String serviceKey = "mwmcxLI4drRwtFraJlaK9MHNmUNip+QF+Z+FpcQqRCj+E6azhFtvGojG7fVcc4EPO9efqY3VaCynHFoxzyyU3g==";
+		//요청 페이지
+		String reqPage = request.getParameter("reqPage");
+		
+		Document document = Jsoup.connect(url).data("serviceKey", serviceKey)
+						  .data("numOfRows", "10")
+						  .data("pageNo", reqPage)
+						  .ignoreContentType(true)
+						  .get();
+		
+		Elements elements = document.select("item"); //응답 XML중, item 태그들만 선택
+		
+		//item 태그 1개 == 식당 1개에 대한 정보 == FoodPlace 객체 1개 => 10개의 FoodPlace ArrayList 관리
+		
+		ArrayList<FoodPlace> resList = new ArrayList<FoodPlace>();
+		
+		for(int i=0; i<elements.size(); i++) {
+			Element item = elements.get(i); //1개의 item 태그 정보
+			
+			String placeTitle = item.select("MAIN_TITLE").text();
+			String placeTel = item.select("CNTCT_TEL").text();
+			String placeHour = item.select("USAGE_DAY_WEEK_AND_TIME").text();
+			String placeAddr = item.select("ADDR1").text();
+			String placeImg = item.select("MAIN_IMG_THUMB").text();
+			
+			//식당 1개 정보 => FoodPlace 객체 1개
+			FoodPlace place = new FoodPlace(placeTitle, placeTel, placeHour, placeAddr, placeImg);
+			resList.add(place);
+		}
+		
+		//Gson 라이브러리 이용하여 자바스크립트 오브젝트(객체) 형태의 문자열로 변환
+		Gson gson = new Gson();
+		String json = gson.toJson(resList);
+		
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().print(json);
+		
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
+
+}

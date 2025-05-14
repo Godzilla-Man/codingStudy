@@ -1,0 +1,74 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>부산 맛집 정보 서비스</title>
+
+<style>
+	.btn-zone {
+		display: flex;
+		justify-content: center;
+	}
+</style>
+
+</head>
+<body>
+	<div class="wrap">
+		<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
+		<main>
+			<section class="section">
+				<div class="page-title">부산 맛집 정보</div>
+				<table class="tbl tbl-hover place">
+					<tr>
+						<th style="width:15%">상호명</th>
+						<th style="width:10%">전화번호</th>
+						<th style="width:15%">영업시간</th>
+						<th style="width:15%">주소</th>
+						<th style="width:15%">이미지</th>
+					</tr>
+				</table>
+				<div class="btn-zone">
+					<button id="more-btn" class="btn-primary lg">더보기</button>
+				</div>
+			</section>
+		</main>
+		<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
+	</div>
+	
+	<script>
+		let reqPage = 1;
+		$('#more-btn').click(function(){
+			
+			$.ajax({
+				url : "/api/busanXml",
+				data : {'reqPage' : reqPage},
+				success : function(res){
+					//console.log(res);
+					
+					$.each(res, function(idx, item){ //배열의 각 요소에 순차 접근
+						let html = '';
+					
+						html += "<tr style='height:150px;'>";
+							html += "<td>" + item.placeTitle + "</td>";
+							html += "<td>" + item.placeTel + "</td>";
+							html += "<td>" + item.placeHour + "</td>";
+							html += "<td>" + item.placeAddr + "</td>";
+							html += "<td><img style='height:120px;' src='" + item.placeImg + "'></td>";
+						html += "</tr>";
+						
+						$('table.place').append(html);
+					});
+				},
+				error : function(){
+					console.log('ajax 통신 오류');
+				}
+			})
+		});
+		
+		reqPage += 1;
+	</script>
+	
+</body>
+</html>
