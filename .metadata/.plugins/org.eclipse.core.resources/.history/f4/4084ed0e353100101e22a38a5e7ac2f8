@@ -1,0 +1,168 @@
+package kr.or.iei.member.model.service;
+
+import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
+
+import kr.or.iei.common.JDBCTemplate;
+import kr.or.iei.member.model.dao.MemberDao;
+import kr.or.iei.member.model.vo.Member;
+
+public class MemberService {
+	
+	private MemberDao dao;
+	
+	public MemberService() {
+		dao = new MemberDao();
+	}
+
+	public int memberJoin(Member member) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.memberJoin(conn, member);
+		if(result > 0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);			
+		}
+		JDBCTemplate.close(conn);
+				
+		return result;
+	}
+
+	public int idDuplChk(String memberId) {
+		Connection conn = JDBCTemplate.getConnection();
+		int cnt = dao.idDuplChk(conn, memberId);
+		JDBCTemplate.close(conn);
+		return cnt;	
+	}
+
+	public Member memberLogin(String loginId, String loginPw) {
+		Connection conn = JDBCTemplate.getConnection();
+		Member loginMember = dao.memberLogin(conn, loginId, loginPw);
+		JDBCTemplate.close(conn);
+		return loginMember;
+	}
+
+	public int updateMember(Member updMember) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.updateMember(conn, updMember);
+		if(result > 0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		return result;
+	}
+
+	public int deleteMember(String memberNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.deleteMember(conn, memberNo);
+		
+		if(result > 0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		
+		JDBCTemplate.close(conn);
+		return result;
+	}
+
+	public int updateMemberPw(String memberNo, String newMemberPw) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.updateMemberPw(conn, memberNo, newMemberPw);
+		
+		if(result > 0) {
+			JDBCTemplate.commit(conn);
+		}else { 
+			JDBCTemplate.rollback(conn);
+		}
+		
+		JDBCTemplate.close(conn);
+		return result;
+	}
+
+	public ArrayList<Member> selectAllMember() {
+		Connection conn = JDBCTemplate.getConnection();
+		ArrayList<Member> list = dao.selectAllMember(conn);
+		JDBCTemplate.close(conn);
+				
+		return list;
+	}
+
+	public int chgLevel(String memberNo, String chgLevel) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.chgLevel(conn, memberNo, chgLevel);
+		
+		if(result > 0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		
+		JDBCTemplate.close(conn);		
+		return result;
+	}
+
+	public boolean chgAllLevel(String memberNoList, String chgLevelList) {
+		Connection conn = JDBCTemplate.getConnection();
+		
+		//전달 받은 회원번호와 변경등급 문자열을 / 기준으로 잘라서 토큰화
+		StringTokenizer st1 = new StringTokenizer(memberNoList, "/");
+		StringTokenizer st2 = new StringTokenizer(chgLevelList, "/");
+		
+		boolean result = true;
+		
+		while(st1.hasMoreTokens()) {
+			String memberNo = st1.nextToken(); //회원번호 토큰 주머니에서, 토큰 추출하여 변수에 저장
+			String chgLevel = st2.nextToken();
+			
+			//DAO 메소드 재사용
+			int res = dao.chgLevel(conn, memberNo, chgLevel);
+			
+			//SQL 수행 결과가 비정상일 떄, 커밋 또는 롤백을 위해 변수 값 변경
+			//또한, 이후 회원에 대한 update는 수행할 필요 없으므로 break로 반복문 종료
+			if(res > 1) {
+				result = false;
+				break;
+			}
+		}
+		
+		if(result) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		
+		JDBCTemplate.close(conn);
+		
+		return result;
+	}
+
+	public String searchId(String memberEmail) {
+		Connection conn = JDBCTemplate.getConnection();
+		String memberId = dao.searchId(conn, memberEmail);
+		JDBCTemplate.close(conn);
+		return memberId;
+		
+	}
+
+	public String searchPw(String memberId, String memberEmail) {
+		Connection conn = JDBCTemplate.getConnection();
+		String toEmail = dao.searchPw(conn, memberId, memberEmail);
+		JDBCTemplate.close(conn);
+				
+		return toEmail;
+	}
+
+	public int updateNewPw(String memberId, String newRandomPw) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.updateNewPw(conn, memberId, newRandomPw);
+		
+		return 0;
+	}
+
+
+
+}

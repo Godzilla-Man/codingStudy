@@ -12,6 +12,20 @@ create table tbl_member (
     enroll_date date default sysdate not null
 );
 
+-- 패스워드 암호화 시, 모두 고정된 60글자이기 때문에 member_pw 컬럼 자료형 변경 처리
+alter table tbl_member modify member_pw char(60);
+
+select *from tbl_member;
+
+delete from tbl_member where member_id !='ffffffff';
+
+commit;
+
+update tbl_member set member_id = 'admin' where member_no = '2505150024';
+
+commit;
+
+
 -- 회원 번호 생성 시 사용할 시퀀스
 create sequence seq_member
 maxvalue 9999 -- 1 ~ 9999까지 1씩 증가

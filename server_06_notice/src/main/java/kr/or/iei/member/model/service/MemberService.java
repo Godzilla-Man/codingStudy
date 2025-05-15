@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import kr.or.iei.common.JDBCTemplate;
 import kr.or.iei.member.model.dao.MemberDao;
 import kr.or.iei.member.model.vo.Member;
@@ -18,6 +20,13 @@ public class MemberService {
 
 	public int memberJoin(Member member) {
 		Connection conn = JDBCTemplate.getConnection();
+		
+		//암호화하여, Member 객체에 다시 세팅
+		String encPw = BCrypt.hashpw(member.getMemberPw(), BCrypt.gensalt());
+		member.setMemberPw(encPw);
+		
+		//System.out.println("encPw : " + encPw);
+		
 		int result = dao.memberJoin(conn, member);
 		if(result > 0) {
 			JDBCTemplate.commit(conn);
@@ -36,13 +45,29 @@ public class MemberService {
 		return cnt;	
 	}
 
+	//사용자 암호화 방식 변경
 	public Member memberLogin(String loginId, String loginPw) {
 		Connection conn = JDBCTemplate.getConnection();
-		Member loginMember = dao.memberLogin(conn, loginId, loginPw);
+		Member loginMember = dao.memberLogin(conn, loginId);
 		JDBCTemplate.close(conn);
-		return loginMember;
+		
+		if(loginMember == null) {
+			return null;
+		}else {						
+			//아이디로만 회원 조회했을 때, 조회 결과 있는 경우
+			
+			//사용자가 입력한 평문과, DB에 저장된 암호화 비밀번호가 같은지 검증
+			boolean loginChk = BCrypt.checkpw(loginPw, loginMember.getMemberPw());
+			
+			if(loginChk) {
+				return loginMember;
+			}else {
+				return null;
+			}
+		}		
 	}
 
+	
 	public int updateMember(Member updMember) {
 		Connection conn = JDBCTemplate.getConnection();
 		int result = dao.updateMember(conn, updMember);
@@ -70,18 +95,19 @@ public class MemberService {
 	}
 
 	public int updateMemberPw(String memberNo, String newMemberPw) {
-		Connection conn = JDBCTemplate.getConnection();
-		int result = dao.updateMemberPw(conn, memberNo, newMemberPw);
-		
-		if(result > 0) {
-			JDBCTemplate.commit(conn);
-		}else { 
-			JDBCTemplate.rollback(conn);
-		}
-		
-		JDBCTemplate.close(conn);
-		return result;
-	}
+	      Connection conn = JDBCTemplate.getConnection();	      
+
+	      newMemberPw = BCrypt.hashpw(newMemberPw, BCrypt.gensalt());
+	      
+	      int result = dao.updateMemberPw(conn, memberNo, newMemberPw);
+	      if(result > 0) {
+	         JDBCTemplate.commit(conn);
+	      }else {
+	         JDBCTemplate.rollback(conn);
+	      }
+	      JDBCTemplate.close(conn);
+	      return result;
+	   }
 
 	public ArrayList<Member> selectAllMember() {
 		Connection conn = JDBCTemplate.getConnection();
@@ -140,6 +166,35 @@ public class MemberService {
 		return result;
 	}
 
+	public String searchId(String memberEmail) {
+		Connection conn = JDBCTemplate.getConnection();
+		String memberId = dao.searchId(conn, memberEmail);
+		JDBCTemplate.close(conn);
+		return memberId;
+		
+	}
 
+	public String searchPw(String memberId, String memberEmail) {
+		Connection conn = JDBCTemplate.getConnection();
+		String toEmail = dao.searchPw(conn, memberId, memberEmail);
+		JDBCTemplate.close(conn);
+				
+		return toEmail;
+	}
 
+	public int updateNewPw(String memberId, String newRandomPw) {
+		Connection conn = JDBCTemplate.getConnection();
+		
+		//임시 비밀번호 10자리 => 암호화 처리하여 DB에 업데이트
+		newRandomPw =  BCrypt.hashpw(newRandomPw, BCrypt.gensalt());
+		
+		int result = dao.updateNewPw(conn, memberId, newRandomPw);
+		if(result > 0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		return result;
+	}
 }

@@ -101,6 +101,7 @@
 	
 	function validateForm(){
 		//현재 비밀번호 검증(사용자가 입력한 기존 비밀번호와 세션에 저장된 회원의 비밀번호 비교)
+		/*
 		console.log('${loginMember.memberPw}');
 		
 		if($('#memberPw').val() != '${loginMember.memberPw}'){
@@ -112,6 +113,7 @@
 			
 			return false;
 		}
+		*/
 		
 		
 		//새 비밀번호가 정규표현식 패턴에 만족하는지?

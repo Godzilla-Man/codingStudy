@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import kr.or.iei.member.model.service.MemberService;
 import kr.or.iei.member.model.vo.Member;
 
@@ -46,6 +48,7 @@ public class PwChgServlet extends HttpServlet {
 			Member loginMember = (Member)session.getAttribute("loginMember");
 			
 			//사용자가 입력한 현재 비밀번호와 세션에 등록된 회원의 비밀번호가 다른 경우
+			/*
 			if(!loginMember.getMemberPw().equals(memberPw)) {
 				request.setAttribute("title", "알림");
 				request.setAttribute("msg", "현재 비밀번호가 일치하지 않습니다.");
@@ -55,6 +58,19 @@ public class PwChgServlet extends HttpServlet {
 				view.forward(request, response);
 				return;
 			}
+			*/
+			
+			//암호화 이후 코드
+			//세션에 등록된 회원의 비밀번호 == 암호화된 데이터
+			//사용자가 입력한 현재 비밀번호 == 평문 데이터
+			boolean pwChk = BCrypt.checkpw(memberPw, loginMember.getMemberPw());
+			if(!pwChk) {
+				request.setAttribute("title", "알림");
+				request.setAttribute("msg", "현재 비밀번호가 일치하지 않습니다.");
+				request.setAttribute("icon", "warning");
+				request.setAttribute("callback", "self.close();");
+			}
+			
 			
 			MemberService service = new MemberService();
 			int result = service.updateMemberPw(loginMember.getMemberNo(), newMemberPw);

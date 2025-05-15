@@ -42,7 +42,7 @@ public class EmailSendServlet extends HttpServlet {
 		String emailContent = request.getParameter("emailContent");
 		
 		/*
-		 * 이메일 전송시, 필요 라이브럴
+		 * 이메일 전송시, 필요 라이브러리
 		 * 
 		 * - activation-1.1.1.jar
 		 * - javax.mail-1.6.2.jar

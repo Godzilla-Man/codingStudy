@@ -1,0 +1,48 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+<c:if test="${gb eq 'id'}">
+<title>아이디 찾기</title>
+
+<c:if test="${gb eq 'pw'}">
+<title>비밀번호 찾기</title>
+
+
+<link rel="stylesheet" href="/resources/css/default.css">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="/resources/js/sweetalert.min.js"></script>
+
+</head>
+<body>
+	<div class="wrap">
+		<main class="content srch-info-container">
+			<section class="section">
+				<div class="srch-info-wrap">
+					<c:if test="${gb eq 'id'}">
+						<div class="page-title">아이디 찾기</div>
+					</c:if>
+					<c:if test="${gb eq 'pw'}">
+						<div class="page-title">비밀번호 찾기</div>
+					</c:if>
+					<div class="srchInfo">
+						<div class="input-wrap">
+							<div class="input-title">
+								<label for="memberEmail">이메일 입력</label>							
+							</div>
+							<div class="input-item">
+								<input type="email" id="memberEmail">
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</main>
+		
+	</div>
+</body>
+</html>

@@ -2,8 +2,15 @@
 <section name="Workbench">
 	<item key="hasShownOverlayPopupBefore" value="true"/>
 	<section name="java.lang.Class">
-		<item key="replaceBarOpen" value="false"/>
+		<item key="replaceBarOpen" value="true"/>
 		<list key="findhistory">
+			<item value="updatememberpw"/>
+			<item value="updatenew"/>
+			<item value="memberlogin"/>
+			<item value="memberjoin"/>
+			<item value="member_pw"/>
+			<item value="srchInfo"/>
+			<item value="아이디 입력"/>
 			<item value="write"/>
 			<item value="comment-write"/>
 			<item value="rootPath"/>
@@ -12,13 +19,6 @@
 			<item value="selected"/>
 			<item value="chkLabel"/>
 			<item value="btnObj"/>
-			<item value="chgPassword"/>
-			<item value="my-page"/>
-			<item value="invali"/>
-			<item value="/pwchg"/>
-			<item value="swal"/>
-			<item value="ajazx"/>
-			<item value="탈퇴"/>
 		</list>
 	</section>
 </section>

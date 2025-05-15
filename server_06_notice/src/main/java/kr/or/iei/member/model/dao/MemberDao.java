@@ -69,19 +69,18 @@ public class MemberDao {
 		return cnt;
 	}
 
-	public Member memberLogin(Connection conn, String loginId, String loginPw) {
+	public Member memberLogin(Connection conn, String loginId) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
 		Member loginMember = null;
 		
-		String query = "select * from tbl_member where member_id = ? and member_pw = ?";
+		String query = "select * from tbl_member where member_id = ?";
 		
 		try {
 			pstmt = conn.prepareStatement(query);
 			
-			pstmt.setString(1, loginId);
-			pstmt.setString(2, loginPw);
+			pstmt.setString(1, loginId);			
 			
 			rset = pstmt.executeQuery();
 			
@@ -89,7 +88,7 @@ public class MemberDao {
 				loginMember = new Member();
 		
 				loginMember.setMemberId(loginId);
-				loginMember.setMemberPw(loginPw);
+				loginMember.setMemberPw(rset.getString("member_pw"));
 				
 				loginMember.setMemberNo(rset.getString("member_no"));
 				loginMember.setMemberPhone(rset.getString("member_phone"));
@@ -244,6 +243,86 @@ public class MemberDao {
 			JDBCTemplate.close(pstmt);
 		}
 				
+		return result;
+	}
+
+	public String searchId(Connection conn, String memberEmail) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String query = "select member_id from tbl_member where member_email = ?";
+		
+		String memberId = null;
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, memberEmail);
+			rset = pstmt.executeQuery();
+			
+			//조건식에 사용된 member_email은 유니크 제약 조건이 설정되어 있음. 조회된다면 1개만 조회됨
+			if(rset.next()) {
+				memberId = rset.getString("member_id");
+			}
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return memberId;
+	}
+
+	public String searchPw(Connection conn, String memberId, String memberEmail) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String toEmail = null;
+		
+		String query = "select member_email from tbl_member where member_id = ? and member_email = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, memberId);
+			pstmt.setString(2, memberEmail);
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				toEmail = rset.getString("member_email");
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return toEmail;
+	}
+
+	public int updateNewPw(Connection conn, String memberId, String newRandomPw) {
+		PreparedStatement pstmt = null;
+		
+		int result = 0;
+		
+		String query = "update tbl_member set member_pw = ? where member_id = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, newRandomPw);
+			pstmt.setString(2, memberId);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		
 		return result;
 	}
 

@@ -1,0 +1,159 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+<c:if test="${gb eq 'id'}">
+<title>아이디 찾기</title>
+</c:if>
+
+<c:if test="${gb eq 'pw'}">
+<title>비밀번호 찾기</title>
+</c:if>
+
+<link rel="stylesheet" href="/resources/css/default.css">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="/resources/js/sweetalert.min.js"></script>
+
+<style>
+	.wrap{
+		min-width : 400px;
+		height : 300px;
+	}
+	
+	.section{
+		width : 400px;
+		margin : 0 auto;
+		display : flex;
+		justify-content : center;
+	}
+	
+	.srch-info-wrap{
+		width : 90%;		
+	}
+	
+	.btn-wrap {
+		margin-top : 15px;
+		display : flex;
+		justify-content : center;
+		gap : 10px;		
+	}
+	
+	.btn-wrap>button{
+		width:40%;
+	}
+
+</style>
+</head>
+<body>
+	<div class="wrap">
+		<main class="content srch-info-container">
+			<section class="section">
+				<div class="srch-info-wrap">
+					<c:if test="${gb eq 'id'}">
+						<div class="page-title">아이디 찾기</div>
+					</c:if>
+					<c:if test="${gb eq 'pw'}">
+						<div class="page-title">비밀번호 찾기</div>
+					</c:if>
+					<div class="srchInfo">
+						<div class="input-wrap">
+							<div class="input-title">
+								<label for="memberEmail">이메일 입력</label>							
+							</div>
+							<div class="input-item">
+								<input type="email" id="memberEmail">
+							</div>
+						</div>
+						
+						<c:if test="${gb eq 'pw'}">
+							<div class="input-wrap">
+								<div class="input-title">
+									<label for="memberId">아이디 입력</label>
+								</div>
+								<div class="input-item">
+									<input type="text" id="memberId">
+								</div>
+							</div>
+						</c:if>						
+					</div>
+					
+					<div class="btn-wrap">
+						<button type="button" class="btn-primary md" onclick="srchInfo()">찾기</button>
+						<button type="button" class="btn-secondary md" onclick="closePop()">닫기</button>
+					</div>
+					
+				</div>
+			</section>
+		</main>
+		
+	</div>
+</body>
+
+	<script>
+		function closePop(){
+			self.close();	
+		}
+		
+		function srchInfo(){
+			let gb = '${gb}';
+			let link = '/member/searchId';
+			let param = {}; //서블릿에 요청할 때 전달할 파라미터
+			
+			if($('#memberEmail').val().length < 1){
+				swal({
+					title : "알림",
+					text : "이메일이 입력되지 않았습니다.",
+					icon : "warning"
+				});
+				
+				return
+			}
+			
+			//비밀번호 찾기 요청일때만 아이디 값 검증
+			if(gb == 'pw'){
+				if($('#memberId'.val().length < 1){
+					swal({
+						title : "알림",
+						text : "아이디가 입력되지 않았습니다.",
+						icon : "warning"
+					});
+					
+					return;
+				}
+				
+				//비밀번호 찾기 요청일 때, 요청 URL 변경
+				link = '/member/searchPw';
+				param.memberId = $('#memberId').val();
+			}
+			
+			//이메일은 아이디 찾기와 비밀번호 찾기 모두 서블릿에 전송해야 함.
+			param.memberEmail = $('#memberEmail').val();
+			
+			//아이디 찾기, 비밀번호 찾기 각기 다른 서블릿으로 요청.
+			$.ajax({
+				url : link,
+				data : param,
+				success : function(res){
+					
+					//아이디 찾기 결과일 때
+					if(gb == 'id') {
+						if(res == 'null'){
+							res = '조회 결과 없음';
+						}
+						
+						$('.page-title').text()
+					}
+					
+				},
+				error : function(){
+					console.log('ajax 통신 오류');
+				}
+			});	
+		}		
+	</script>
+ 
+</html>
